@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import Blog, Comment
 from .serializers import BlogSerializer, CommentSerializer
 from accounts.permissions import IsAuthenticatedAndActive
+from .permissions import IsAuthorOrSuperuser
 
 class BlogListCreateView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
@@ -16,6 +17,10 @@ class BlogDetailView(generics.RetrieveAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
+class BlogDeleteView(generics.DestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = [IsAuthenticatedAndActive, IsAuthorOrSuperuser]
 class CommentCreateView(generics.CreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedAndActive]
