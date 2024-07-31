@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, ChangePasswordSerializer
+from .permissions import IsAuthenticatedAndActive
 from .models import CustomUser, EmailVerificationToken
 from .utils import generate_token
 from django.utils import timezone
@@ -51,6 +52,7 @@ def login_view(request):
 class UserDetailView(generics.RetrieveUpdateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
+    permission_classes = [IsAuthenticatedAndActive]
 
 @api_view(['GET'])
 def verify_email(request):
@@ -74,6 +76,7 @@ def verify_email(request):
 
 class ChangePasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticatedAndActive]
 
     def get_object(self):
         return self.request.user
