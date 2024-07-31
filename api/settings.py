@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'accounts',
     'blogs',
+    'courses',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
